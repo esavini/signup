@@ -1,94 +1,74 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PrimaWeb.Models;
+using signup.Data;
+using signup.Models;
 
-namespace PrimaWeb.Controllers;
+namespace signup.Controllers;
 
-public class HomeController : Controller {
-    private readonly ILogger<HomeController> _logger;
-    public readonly AppDbContext Context;
+public class HomeController(ILogger<HomeController> logger, AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager) : Controller {
+    private readonly ILogger<HomeController> _logger = logger;
+    private readonly AppDbContext _dbContext = context;
+    private readonly SignInManager<AppUser> _signInManager = signInManager;
+    private readonly UserManager<AppUser> _userManager = userManager;
 
-    public HomeController(ILogger<HomeController> logger, AppDbContext context) {
-        _logger = logger;
-        Context = context;
-    }
-    
-    public IActionResult Index(int? id) {
-        TempData["user_id"] = id;
-        return View();
-    }
-    
-    public IActionResult Privacy() {
+    public IActionResult Index() {
         return View();
     }
 
-    [HttpGet]
-    public IActionResult Products(int? id) {
-        if (id == null) {
-            return View(new SessionInfo() { Context = Context });
-        } else {
-            TempData["user_id"] = id;
-            return View(new SessionInfo() { UserId = id, Context = Context });
-        }
+    public IActionResult Products() {
+        var prodList = _dbContext.Product.ToList();
+        
+        return View(prodList);
+    }
+
+    public IActionResult Cart() {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userCart = _dbContext.Cart.Where(c => c.UserId == userId).ToList(); // .Select(c => c.Product).ToList()
+
+        return View(userCart);
     }
 
     [HttpPost]
-    public IActionResult AddToCart(Cart cart) {
-        var user = Context.User.Where(u => u.UserId == cart.UserId).ElementAt(0);
-        var product = Context.Product.Where(p => p.ProductId == cart.ProductId).ElementAt(0);
+    public IActionResult AddToCart(Cart cart) { 
+        /* cart has ProductId and Quantity */
+        var product = _dbContext.Product.Where(p => p.ProductId == cart.ProductId).ElementAt(0);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = _dbContext.Users.Where(u => u.Id == userId).ElementAt(0);
 
-        cart.User = user;
-        cart.Product = product;
+        _dbContext.Cart.Add(
+            new Cart { 
+                Product = product, 
+                User = user,
+                Quantity = cart.Quantity 
+            }
+        );
+        _dbContext.SaveChanges();
 
-        Context.Cart.Add(cart);
-        Context.SaveChanges();
-
-        return RedirectToAction("Products", new { id = cart.UserId });
-    }
-
-    public IActionResult Cart(int? id) {
-        if (id == null) {
-            return View(new SessionInfo() { Context = Context });
-        } else {
-            TempData["user_id"] = id;
-            return View(new SessionInfo() { Cart = new Cart{ UserId = (int)id! }, Context = Context });
-        }
+        return RedirectToAction("Products");
     }
 
     [HttpPost]
     public IActionResult Order(Cart cart) {
-        var toDelete = Context.Cart.Where(c => c.UserId == cart.UserId && c.ProductId == cart.ProductId);
-
+        var toDelete = _dbContext.Cart.Where(c => c.CartId == cart.CartId);
+        
         foreach (var item in toDelete) {
-            Context.Cart.Remove(item);
+            _dbContext.Cart.Remove(item);
         }
-        Context.SaveChanges();
 
-        return RedirectToAction("Cart", new { id = cart.UserId });
+        _dbContext.SaveChanges();
+        
+        return RedirectToAction("Cart");
     }
 
-    [HttpGet]
-    public IActionResult SignUp() {
+    public IActionResult Privacy() {
         return View();
     }
 
-    [HttpPost]
-    public IActionResult Confirm(User u) {
-        bool recordAlreadyExists = Context.User.AsNoTracking().Any(entry => entry.Email == u.Email);
-        if (!recordAlreadyExists) {
-            Context.User.Add(u);
-            Context.SaveChanges();
-
-            return  View("Confirm", u);
-        }
-        
-        return View("SignUp");
-    }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
+    public IActionResult Error() {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

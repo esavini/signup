@@ -13,8 +13,6 @@ a {
 
 .btn-primary {
   color: #fff;
-  background-color: #c21b1b;
-  border-color: #4eac18;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -42,5 +40,5 @@ a {
 }
 
 #body { 
-  min-height: 87vh;
+  min-height: 85vh;
 }

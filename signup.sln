@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrimaWeb", "PrimaWeb.csproj", "{E306033A-3788-4D2B-81D6-CAA17CB3C79E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "signup", "signup.csproj", "{6496915A-CA42-4674-926E-4D44DB8FDAD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E306033A-3788-4D2B-81D6-CAA17CB3C79E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E306033A-3788-4D2B-81D6-CAA17CB3C79E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E306033A-3788-4D2B-81D6-CAA17CB3C79E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E306033A-3788-4D2B-81D6-CAA17CB3C79E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6496915A-CA42-4674-926E-4D44DB8FDAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6496915A-CA42-4674-926E-4D44DB8FDAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6496915A-CA42-4674-926E-4D44DB8FDAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6496915A-CA42-4674-926E-4D44DB8FDAD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2003B71E-266E-48E5-9C7C-52CC7D186DA3}
+		SolutionGuid = {BCE12CE6-618B-43C6-B6BB-E992519738EA}
 	EndGlobalSection
 EndGlobal
