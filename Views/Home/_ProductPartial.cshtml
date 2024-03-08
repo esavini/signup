@@ -33,11 +33,11 @@
                 
                 @if(productInCart) {
                     <button type="button" data-bs-toggle="modal" data-bs-target="#quantity-modal-@Model.Product.ProductId" class="h-100 mx-auto p-2 rounded bg-secondary d-flex align-items-center border-0" disabled>
-                        <img src="https://www.svgrepo.com/show/477442/shopping-cart-21.svg" id="cart-img" class="w-50 mx-auto">
+                        <img src="~/img/shopping-cart-contain.svg" id="cart-img" class="w-50 mx-auto">
                     </button>
                 } else {
                     <button type="button" data-bs-toggle="modal" data-bs-target="#quantity-modal-@Model.Product.ProductId" class="h-100 mx-auto p-2 rounded bg-secondary d-flex align-items-center border-0">
-                        <img src="https://www.svgrepo.com/show/477473/shopping-cart-16.svg" id="cart-img" class="w-50 mx-auto">
+                        <img src="~/img/shopping-cart-add.svg" id="cart-img" class="w-50 mx-auto">
                     </button>
                 }    
             }

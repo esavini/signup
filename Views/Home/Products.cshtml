@@ -1,5 +1,5 @@
 @using signup.Data;
-@model List<Product>;
+@inject AppDbContext _dbContext;
 @{
     ViewData["Title"] = "Products";
 }
@@ -8,7 +8,7 @@
     <h1 class="display-4">@ViewData["Title"]</h1>
     <div class="container">
         <div>
-            @foreach(var item in Model) {
+            @foreach(var item in _dbContext.Product.ToList()) {
                 await Html.RenderPartialAsync("_ProductPartial.cshtml", new Cart { Product = item });
             }
         </div>

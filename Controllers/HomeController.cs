@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,10 @@ public class HomeController(ILogger<HomeController> logger, AppDbContext context
     }
 
     public IActionResult Products() {
-        var prodList = _dbContext.Product.ToList();
-        
-        return View(prodList);
+        return View();
     }
 
+    [Authorize]
     public IActionResult Cart() {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var userCart = _dbContext.Cart.Where(c => c.UserId == userId).ToList(); // .Select(c => c.Product).ToList()
