@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using signup.Data;
-using signup.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
